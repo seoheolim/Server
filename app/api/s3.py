@@ -1,4 +1,5 @@
 import logging
+
 from fastapi import UploadFile
 
 import boto3
@@ -39,7 +40,7 @@ class UploadService:
         except ClientError as e:
             logging.error(e)
         except Exception as e:
-            logging.error("There was an error uploading the file")
+            logging.error(f"There was an error uploading the file, {e}")
 
         return response
 

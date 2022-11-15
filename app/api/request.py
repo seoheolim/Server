@@ -2,7 +2,7 @@ import logging
 
 from fastapi import APIRouter, UploadFile, BackgroundTasks
 
-from app.api.tasks import process_files
+from app.api.tasks import process_files, convert_video
 
 logging.basicConfig(level=logging.INFO)
 router = APIRouter()
@@ -14,14 +14,13 @@ async def greeting():
 
 
 @router.post("/upload")
-async def upload_files(image: UploadFile, video: UploadFile):
-    # back_ground_tasks.add_task(process_files, image, video)
-    await process_files(video, image)
+async def upload_files(image: UploadFile, video: UploadFile, task_id: str):
+    await process_files(video, image, task_id)
     return {"message": "start!"}
 
 
-#
-#
-# @router.get("/task/{task_id}")
-# async def get_task_status(task_id: str):
-#     return divide.AsyncResult(task_id)
+@router.get("/task/{task_id}")
+async def get_task_status(task_id: str):
+    logging.info("TEST")
+    result = convert_video.AsyncResult(task_id)
+    return {"message": result.info}

@@ -7,7 +7,11 @@ from celery import Celery
 from app import config
 from app.api.api import api_router
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    filename="example.log", filemode="w", level=logging.INFO,
+    format='%(asctime)s %(levelname)s:%(message)s',
+    datefmt='%m/%d/%Y %I:%M:%S %p',
+    )
 
 
 def create_app():
@@ -33,6 +37,8 @@ celery = Celery(
 celery.conf.imports = [
     'app.api.tasks',
 ]
+
+logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=9000, reload=True)
