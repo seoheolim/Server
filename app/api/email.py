@@ -21,11 +21,13 @@ conf = ConnectionConfig(
 )
 
 
-async def send_email(email: str, loc: str):
+async def send_email(email: str, video_path: str):
     logging.info(f"start sending email to {email}")
 
-    loc = json.loads(loc)
-    html = EMAIL_TEMPLATE.format("[HIDE] 영상 변환이 완료되었습니다","변환이 완료되었습니다!", "아래 확인하기 버튼을 클릭하시면 변환된 영상을 확인할 수 있습니다. ", loc["video_loc"], "확인하기")
+    html = EMAIL_TEMPLATE\
+        .format("[HIDE] 영상 변환이 완료되었습니다", "영상은 24시간 보관 후 삭제될 예정이니,", "시간 내 다운로드 해주시면 감사하겠습니다.",
+                "아래 download 버튼을 클릭하시면 변환된 영상을 확인할 수 있습니다.", video_path, "download")
+
     message = MessageSchema(
         subject="[HIDE] 영상 변환이 완료되었습니다",
         recipients=[email],
@@ -46,15 +48,17 @@ EMAIL_TEMPLATE = '''
   <div style="margin: 0 auto; width: 90%; text-align: center;">
     <h1 style="background-color: rgba(0, 53, 102, 1); padding: 5px 10px; border-radius: 5px; color: white;">{0}</h1>
     <div style="margin: 30px auto; background: white; width: 40%; border-radius: 10px; padding: 50px; text-align: center;">
-      <h3 style="margin-bottom: 100px; font-size: 24px;">{1}</h3>
-      <p style="margin-bottom: 30px;">{2}</p>
+        <img width="200" height="200" src = "https://hide-file.s3.ap-northeast-2.amazonaws.com/resources/Logo.png" alt="Hide-Logo">
+        <h3 style="font-size:24px">{1}</h3>
+        <h3 style="font-size: 24px;">{2}</h3>
+      <p style="margin-bottom: 30px;">{3}</p>
       <a style="display: block; margin: 0 auto; border: none; background-color: rgba(255, 214, 10, 1);
-       color: white; width: 200px; line-height: 24px; padding: 10px; font-size: 24px; border-radius: 10px; 
+       color: white; width: 200px; line-height: 24px; padding: 10px; font-size: 24px; border-radius: 10px;
        cursor: pointer; text-decoration: none;"
-        href="https://hide-file.s3.ap-northeast-2.amazonaws.com/{3}"
+        href="https://hide-file.s3.ap-northeast-2.amazonaws.com/result/{4}"
         target="_blank"
       >
-        {4}
+        {5}
       </a>
     </div>
   </div>
