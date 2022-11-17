@@ -12,6 +12,8 @@ REDIS_DB = os.getenv("REDIS_DB")
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
 
+S3_URL = os.getenv("S3_URL")
+LOGO_URL = os.getenv("LOGO_URL")
 
 MAIL_USERNAME = os.getenv("MAIL_USERNAME")
 MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
