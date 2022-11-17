@@ -1,13 +1,12 @@
 import logging
 
-from fastapi import UploadFile
-
 import boto3
 from botocore.exceptions import ClientError
 
 from app.config import AWS_SECRET_KEY, AWS_ACCESS_KEY_ID
 
-class UploadService:
+
+class S3Service:
     def __init__(self, aws_access_key_id, aws_secret_access_key):
         self.bucket_name = "hide-file"
         self.aws_access_key_id = aws_access_key_id
@@ -29,5 +28,17 @@ class UploadService:
             logging.error(f"There was an error uploading the file, {e}")
         return
 
+    def delete_video_files(self, to_be_deleted_files):
+        try:
+            self.s3_client.delete_objects(
+                Bucket=self.bucket_name,
+                Delete=to_be_deleted_files
+                )
+        except ClientError as e:
+            logging.error(e)
+        except Exception as e:
+            logging.error(f"There was an error deleting files, {e}")
+        return
 
-upload_service = UploadService(AWS_ACCESS_KEY_ID, AWS_SECRET_KEY)
+
+s3_service = S3Service(AWS_ACCESS_KEY_ID, AWS_SECRET_KEY)
