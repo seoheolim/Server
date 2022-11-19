@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "9000"
+    depends_on:
+      - redis
+      - celery
+    volumes:
+      - "./:/hide/"
+    networks:
+      - backend
+
+  nginx:
+    image: "nginx:latest"
+    ports:
+      - "80:80"
+    volumes:
+      - "./app/config/nginx.conf:/etc/nginx/nginx.conf"
+    networks:
+      - backend
+    depends_on:
+      - app
+
+
+  redis:
+    container_name: hide-redis
+    image: redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    volumes:
+      - "./:/hide/"
+    networks:
+      - backend
+
+  celery:
+    container_name: hide-celery
+    build: .
+    command: "celery -A main.celery worker -l info --pool=prefork"
+    depends_on:
+      - redis
+    volumes:
+      - "./:/hide/"
+    networks:
+      - backend
+
+
+networks:
+  backend:
+    driver: bridge
