@@ -2,7 +2,7 @@ import logging
 
 import redis
 
-from app.config import REDIS_DB, REDIS_PORT, REDIS_HOST
+from app.config.config import REDIS_DB, REDIS_PORT, REDIS_HOST
 
 
 def create_redis():
