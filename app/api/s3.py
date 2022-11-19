@@ -3,7 +3,7 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 
-from app.config import AWS_SECRET_KEY, AWS_ACCESS_KEY_ID
+from app.config.config import AWS_SECRET_KEY, AWS_ACCESS_KEY_ID
 
 
 class S3Service:

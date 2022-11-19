@@ -4,7 +4,7 @@ import datetime
 
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 
-from app.config import MAIL_FROM, MAIL_SERVER, MAIL_USERNAME, MAIL_STARTTLS,\
+from app.config.config import MAIL_FROM, MAIL_SERVER, MAIL_USERNAME, MAIL_STARTTLS,\
     MAIL_PORT, MAIL_FROM_NAME, MAIL_PASSWORD, MAIL_SSL_TLS, USE_CREDENTIALS, VALIDATE_CERTS, S3_URL, LOGO_URL
 from app.db.redis import redis_db
 

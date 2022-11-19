@@ -15,11 +15,11 @@ from .email import send_email
 from .audio import extract_audio, combine_audio
 
 
-async def process_files(video_file: UploadFile, image_file: UploadFile, email: str, task_id: str):
+async def process_files(video_file: UploadFile, image_file: UploadFile, email: str, option: str, task_id: str):
 
-    video_path, video_name = save_file(video_file, task_id)
-    image_path, _ = save_file(image_file, task_id)
-    convert_video.apply_async(args=[image_path, video_path, video_name, email], task_id=task_id, expires=30)
+    video_path, video_name = await save_file(video_file, task_id)
+    image_path, _ = await save_file(image_file, task_id)
+    convert_video.apply_async(args=[image_path, video_path, video_name, email, option], task_id=task_id, expires=30)
 
 
 async def generate_task_id(email: str):
@@ -31,19 +31,24 @@ async def generate_task_id(email: str):
     return rand_str
 
 
-def save_file(file: UploadFile, task_id: str):
+async def save_file(file: UploadFile, task_id: str):
     new_file_name = f"{task_id}{file.filename}"
     path = "app/api/temp/" + new_file_name
+
     with open(path, "wb") as f:
         f.write(file.file.read())
+
+    logging.info(f"file saved! [{new_file_name}]")
 
     return path, new_file_name
 
 
 @shared_task()
-def convert_video(image_path, video_path, entire_video_name, email):
+def convert_video(image_path, video_path, entire_video_name, email, option):
 
     video_name = entire_video_name.split(".")[0]
+
+    logging.info(image_path, video_path)
     audio_path = extract_audio(video_path, video_name)
 
     logging.info(f"audio extract done! -> {audio_path}")

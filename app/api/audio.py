@@ -6,6 +6,7 @@ import moviepy.editor as mp
 def extract_audio(file_path, file_name):
     audio_path = f"app/api/temp/{file_name}.mp3"
     clip = mp.VideoFileClip(file_path)
+
     if clip.audio is None:
         logging.debug("audio clip is None!")
         return None
