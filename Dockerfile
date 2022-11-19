@@ -13,11 +13,9 @@ COPY . /hide/
 COPY ./app /hide/app
 
 WORKDIR /hide/app/api
-RUN mkdir -p temp
+RUN mkdir -p /temp
 
 WORKDIR /hide
 EXPOSE 80
 
 CMD ["gunicorn", "main:app", "--bind", "0.0.0.0:9000","--workers", "4","--worker-class", "uvicorn.workers.UvicornWorker"]
-#CMD = "gunicorn main:app --bind='0.0.0.0:--workers 4 --worker-class uvicorn.workers.UvicornWorker"
-#CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port","9000"]
